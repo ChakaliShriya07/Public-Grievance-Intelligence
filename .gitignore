@@ -1,0 +1,91 @@
+# ==============================
+# Python
+# ==============================
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# ==============================
+# Virtual environments
+# ==============================
+.venv/
+venv/
+env/
+ENV/
+
+# ==============================
+# Environment / secrets
+# ==============================
+.env
+.env.*
+!.env.example
+*.key
+secrets/
+credentials/
+
+# ==============================
+# Jupyter
+# ==============================
+.ipynb_checkpoints/
+
+# ==============================
+# Streamlit
+# ==============================
+.streamlit/secrets.toml
+
+# ==============================
+# Large historical datasets
+# ==============================
+data/raw/
+data/processed/*.csv
+data/*.csv
+*.json
+*.jsonl
+*.xlsx
+
+# ==============================
+# ML / RAG large files
+# ==============================
+*.npy
+*.npz
+*.index
+*.faiss
+*.bin
+*.pt
+*.pth
+*.safetensors
+
+# ==============================
+# Model caches
+# ==============================
+.cache/
+huggingface/
+transformers/
+sentence_transformers/
+
+# ==============================
+# Logs
+# ==============================
+*.log
+
+# ==============================
+# OS files
+# ==============================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ==============================
+# Temporary files
+# ==============================
+*.tmp
+*.temp
+*.bak
+*.swp
+# Local backup / experimental Streamlit files
+app back.py
+app backup.py
+app oid.py
+app_mongodb_v9_resolution_wording.py
+src/ai_grievance_engine_backup.py
