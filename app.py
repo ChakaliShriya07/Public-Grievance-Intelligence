@@ -97,7 +97,127 @@ st.markdown(
     .tricolor { width:150px; height:3px; margin:25px auto; border-radius:5px; background:linear-gradient(90deg,#ff9933 0 33%,#fff 33% 66%,#138808 66%); }
     .small-muted { color:#718ca1; font-size:11px; }
     [data-testid="stMetric"] { background:rgba(8,25,40,.65); border:1px solid rgba(110,180,225,.10); padding:12px; border-radius:12px; }
-    div.stButton > button { border-radius:9px; min-height:45px; font-weight:700; }
+    /* Motion and glass styling inspired by the original dashboard */
+    @keyframes pageEnter {
+        from { opacity: 0; transform: translateY(12px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes cardReveal {
+        from { opacity: 0; transform: translateY(14px) scale(.99); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes livePulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(72,199,116,.35); }
+        50%      { box-shadow: 0 0 0 6px rgba(72,199,116,0); }
+    }
+    @keyframes glowMove {
+        0%, 100% { background-position: 0% 50%; }
+        50%      { background-position: 100% 50%; }
+    }
+    .gov-header, .card, .kpi, .insight {
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        animation: cardReveal .55s ease-out both;
+        transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+    }
+    .card:hover, .kpi:hover, .insight:hover {
+        transform: translateY(-3px);
+        border-color: rgba(63,190,190,.38);
+        box-shadow: 0 18px 42px rgba(0,0,0,.28), 0 0 22px rgba(0,174,180,.06);
+    }
+    .gov-header {
+        position: relative;
+        overflow: hidden;
+        background-size: 200% 200%;
+        animation: pageEnter .6s ease-out both, glowMove 12s ease-in-out infinite;
+    }
+    .gov-header::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(110deg, transparent 0%, rgba(88,190,220,.06) 45%, transparent 70%);
+        transform: translateX(-100%);
+        animation: headerShimmer 8s ease-in-out infinite;
+    }
+    @keyframes headerShimmer {
+        0%, 65%, 100% { transform: translateX(-100%); }
+        80% { transform: translateX(100%); }
+    }
+    .hero, .title, .subtitle { animation: pageEnter .7s ease-out both; }
+    .hero-title {
+        background: linear-gradient(110deg,#f4fbff 0%,#c6f3ff 42%,#5de0d0 70%,#edfaff 100%);
+        background-size: 220% auto;
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: pageEnter .8s ease-out both, glowMove 10s ease-in-out infinite;
+    }
+    .badge { animation: livePulse 2.4s ease-in-out infinite; }
+
+    /* Prevent Streamlit's default red primary buttons */
+    div.stButton > button,
+    div.stFormSubmitButton > button,
+    button[data-testid="stBaseButton-primary"],
+    button[data-testid="stBaseButton-secondary"] {
+        border-radius: 10px !important;
+        min-height: 45px;
+        font-weight: 700 !important;
+        transition: transform .18s ease, box-shadow .18s ease, background .18s ease !important;
+    }
+    div.stButton > button[kind="primary"],
+    div.stFormSubmitButton > button[kind="primary"],
+    button[data-testid="stBaseButton-primary"] {
+        color: #f4ffff !important;
+        border: 1px solid rgba(77,220,205,.5) !important;
+        background: linear-gradient(120deg,#087f8c,#0e9f9a,#087f8c) !important;
+        background-size: 200% 100% !important;
+        box-shadow: 0 7px 20px rgba(0,150,150,.18) !important;
+    }
+    div.stButton > button[kind="primary"]:hover,
+    div.stFormSubmitButton > button[kind="primary"]:hover,
+    button[data-testid="stBaseButton-primary"]:hover {
+        background-position: 100% 0 !important;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 26px rgba(0,190,180,.28) !important;
+        border-color: rgba(110,255,230,.8) !important;
+    }
+    div.stButton > button[kind="secondary"],
+    div.stFormSubmitButton > button[kind="secondary"],
+    button[data-testid="stBaseButton-secondary"] {
+        color: #d7edf7 !important;
+        background: rgba(12,37,56,.78) !important;
+        border: 1px solid rgba(110,180,225,.22) !important;
+    }
+    div.stButton > button[kind="secondary"]:hover,
+    div.stFormSubmitButton > button[kind="secondary"]:hover,
+    button[data-testid="stBaseButton-secondary"]:hover {
+        color: #ffffff !important;
+        background: rgba(17,67,83,.9) !important;
+        border-color: rgba(77,220,205,.45) !important;
+        transform: translateY(-1px);
+    }
+    input, textarea, [data-baseweb="select"] > div { border-radius: 10px !important; }
+    input:focus, textarea:focus {
+        border-color: #31c7bd !important;
+        box-shadow: 0 0 0 1px rgba(49,199,189,.25) !important;
+    }
+    [data-testid="stMetric"] { transition: transform .2s ease, border-color .2s ease; }
+    [data-testid="stMetric"]:hover { transform: translateY(-2px); border-color: rgba(49,199,189,.35); }
+    @media (max-width: 700px) {
+        .hero { padding: 30px 8px 20px; }
+        .hero-title { letter-spacing: -1.5px; }
+        .title { font-size: 30px; }
+        .card, .kpi { padding: 16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            scroll-behavior: auto !important;
+            transition-duration: .01ms !important;
+        }
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -696,9 +816,20 @@ def intelligence_dashboard():
         else:
             with st.spinner("Preparing evidence-based intelligence report..."):
                 result=ask_ai_grievance_intelligence(question.strip())
-            st.markdown('<div class="insight">',unsafe_allow_html=True)
-            st.markdown(result.get("answer","No report generated."))
-            st.markdown('</div>',unsafe_allow_html=True)
+            # The AI engine currently returns a plain string. Accept both
+            # strings and dictionaries for compatibility with either return format.
+            if isinstance(result, dict):
+                report_text = result.get("answer", "No report generated.")
+            elif isinstance(result, str):
+                report_text = result.strip() or "No report generated."
+            elif result is None:
+                report_text = "No report generated."
+            else:
+                report_text = str(result)
+
+            st.markdown('<div class="insight">', unsafe_allow_html=True)
+            st.markdown(report_text)
+            st.markdown('</div>', unsafe_allow_html=True)
 
 
 page=st.session_state.page
